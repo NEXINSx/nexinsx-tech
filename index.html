@@ -345,86 +345,316 @@ void main() {
 <div class="md:col-span-5 h-[400px] md:h-[600px] relative mt-margin-mobile md:mt-0">
 <div class="absolute inset-0 technical-border bg-surface-container-low/50 flex items-center justify-center overflow-hidden p-unit">
 <!-- 3D Intelligence Core -->
-<!-- STITCH_THREEJS_START:ANIMATION_4 class="absolute inset-0 w-full h-full" -->
-<div class="absolute inset-0 w-full h-full" style="display:block;">
-<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
-<div id="threejs-container-ANIMATION_4" style="width:100%;height:100%"><canvas width="697" height="898" style="display: block; width: 465px; height: 599px;"></canvas></div>
+<div
+    id="nexinsx-intelligence-panel"
+    class="absolute inset-0 technical-border bg-surface-container-low/50 overflow-hidden"
+>
+    <div
+        id="threejs-container-ANIMATION_4"
+        style="
+            position:absolute;
+            inset:0;
+            width:100%;
+            height:100%;
+            z-index:2;
+        "
+    ></div>
+
+    <!-- Brand Logo overlay -->
+    <img
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiNQMfFvz9JocfPg_oC_95DkhwWNd8XWlG5ku_TSswAL7Y3GZgZGqPrTr4jgRcszHcx_IvG8-PR-YwIf5zdi3GDUeJ8NM9oMMomxWLKiH0dmfi3S9VP48QxzTQg332ct2HE8KDsUMgKFFfVjKDmaftfdGrc7OJMRC4eFrJXrXSDk9g0WqrDlTiE8IehOKcO-YhZ7Xf0HJxmOPNDVAZUJYu91OmG4weQs-P4OTHolPmRQwSegq_cPI7vAAPWlfxnrKavg"
+        alt="NEXINSx Logo"
+        class="w-16 h-16 absolute bottom-4 right-4 z-10 mix-blend-multiply opacity-50 pointer-events-none"
+    >
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.125.0/build/three.min.js"></script>
+
 <script>
-(function() {
-  const container = document.getElementById('threejs-container-ANIMATION_4');
-  const devicePixelRatio = window.devicePixelRatio || 1;
-  // NEXINSx Intelligence Core 3D Visualization
-const scene = new THREE.Scene();
-const width = container.clientWidth || window.innerWidth;
-const height = container.clientHeight || window.innerHeight;
-const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+(function () {
+    "use strict";
 
-renderer.setSize(width, height);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-container.appendChild(renderer.domElement);
+    function initIntelligenceCore() {
+        const container = document.getElementById(
+            "threejs-container-ANIMATION_4"
+        );
 
-// Lighting
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-scene.add(ambientLight);
-const pointLight = new THREE.PointLight(0xffffff, 1);
-pointLight.position.set(5, 5, 5);
-scene.add(pointLight);
+        if (!container) {
+            console.error("NEXINSx Core: container not found");
+            return;
+        }
 
-// Intelligence Core Geometry (Central geometric core with rings)
-const coreGroup = new THREE.Group();
+        if (typeof THREE === "undefined") {
+            console.error("NEXINSx Core: Three.js failed to load");
+            return;
+        }
 
-// Central Core
-const coreGeometry = new THREE.IcosahedronGeometry(1, 0);
-const coreMaterial = new THREE.MeshPhongMaterial({ 
-    color: 0x111111, 
-    flatShading: true,
-    transparent: true,
-    opacity: 0.9
-});
-const core = new THREE.Mesh(coreGeometry, coreMaterial);
-coreGroup.add(core);
+        console.log(
+            "NEXINSx Core: Three.js loaded:",
+            THREE.REVISION
+        );
 
-// Inner Ring (Engineering Ring)
-const ring1Geometry = new THREE.TorusGeometry(1.5, 0.02, 16, 100);
-const ringMaterial = new THREE.MeshBasicMaterial({ color: 0x6B6B6B });
-const ring1 = new THREE.Mesh(ring1Geometry, ringMaterial);
-coreGroup.add(ring1);
+        const width = container.clientWidth || 500;
+        const height = container.clientHeight || 600;
 
-// Outer Ring (Data Orbit)
-const ring2Geometry = new THREE.TorusGeometry(2.0, 0.01, 16, 100);
-const ring2 = new THREE.Mesh(ring2Geometry, ringMaterial);
-ring2.rotation.x = Math.PI / 2;
-coreGroup.add(ring2);
+        const scene = new THREE.Scene();
 
-scene.add(coreGroup);
-camera.position.z = 5;
+        const camera = new THREE.PerspectiveCamera(
+            45,
+            width / height,
+            0.1,
+            100
+        );
 
-// Animation Loop
-const animate = () => {
-    requestAnimationFrame(animate);
-    coreGroup.rotation.y += 0.005;
-    coreGroup.rotation.x += 0.002;
-    
-    ring1.rotation.z += 0.01;
-    ring2.rotation.y += 0.008;
-    
-    renderer.render(scene, camera);
-};
+        camera.position.set(0, 0, 6);
+        camera.lookAt(0, 0, 0);
 
-animate();
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true
+        });
 
-// Resize listener
-window.addEventListener('resize', () => {
-    const newWidth = container.clientWidth || window.innerWidth;
-    const newHeight = container.clientHeight || window.innerHeight;
-    camera.aspect = newWidth / newHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(newWidth, newHeight);
-});
+        renderer.setPixelRatio(
+            Math.min(window.devicePixelRatio || 1, 2)
+        );
+
+        renderer.setSize(width, height, false);
+        renderer.setClearColor(0x000000, 0);
+
+        renderer.domElement.style.position = "absolute";
+        renderer.domElement.style.left = "0";
+        renderer.domElement.style.top = "0";
+        renderer.domElement.style.width = "100%";
+        renderer.domElement.style.height = "100%";
+        renderer.domElement.style.display = "block";
+        renderer.domElement.style.zIndex = "2";
+
+        container.appendChild(renderer.domElement);
+
+        // Lighting
+        scene.add(
+            new THREE.AmbientLight(0xffffff, 1.2)
+        );
+
+        const keyLight = new THREE.PointLight(
+            0xffffff,
+            3
+        );
+
+        keyLight.position.set(4, 4, 6);
+        scene.add(keyLight);
+
+        const fillLight = new THREE.PointLight(
+            0xffffff,
+            1.5
+        );
+
+        fillLight.position.set(-4, -2, 3);
+        scene.add(fillLight);
+
+        // Core group
+        const coreGroup = new THREE.Group();
+        scene.add(coreGroup);
+
+        // Main core
+        const coreGeometry =
+            new THREE.IcosahedronGeometry(1.05, 1);
+
+        const coreMaterial =
+            new THREE.MeshStandardMaterial({
+                color: 0x111111,
+                roughness: 0.25,
+                metalness: 0.75,
+                flatShading: true
+            });
+
+        const core = new THREE.Mesh(
+            coreGeometry,
+            coreMaterial
+        );
+
+        coreGroup.add(core);
+
+        // Wireframe
+        const wireGeometry =
+            new THREE.IcosahedronGeometry(1.28, 1);
+
+        const wireMaterial =
+            new THREE.MeshBasicMaterial({
+                color: 0x666666,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.65
+            });
+
+        const wire = new THREE.Mesh(
+            wireGeometry,
+            wireMaterial
+        );
+
+        coreGroup.add(wire);
+
+        // Inner orbit
+        const ringMaterial =
+            new THREE.MeshBasicMaterial({
+                color: 0x555555
+            });
+
+        const ring1 = new THREE.Mesh(
+            new THREE.TorusGeometry(
+                1.55,
+                0.025,
+                16,
+                128
+            ),
+            ringMaterial
+        );
+
+        ring1.rotation.x = Math.PI * 0.35;
+        coreGroup.add(ring1);
+
+        // Outer orbit
+        const ring2 = new THREE.Mesh(
+            new THREE.TorusGeometry(
+                2.05,
+                0.015,
+                16,
+                128
+            ),
+            ringMaterial
+        );
+
+        ring2.rotation.x = Math.PI / 2;
+        coreGroup.add(ring2);
+
+        // Third orbit
+        const ring3 = new THREE.Mesh(
+            new THREE.TorusGeometry(
+                2.35,
+                0.01,
+                16,
+                128
+            ),
+            new THREE.MeshBasicMaterial({
+                color: 0x888888,
+                transparent: true,
+                opacity: 0.45
+            })
+        );
+
+        ring3.rotation.y = Math.PI * 0.35;
+        ring3.rotation.z = Math.PI * 0.2;
+        coreGroup.add(ring3);
+
+        // Orbiting nodes
+        const nodeGeometry =
+            new THREE.SphereGeometry(
+                0.045,
+                12,
+                12
+            );
+
+        const nodeMaterial =
+            new THREE.MeshBasicMaterial({
+                color: 0x111111
+            });
+
+        const nodes = [];
+
+        for (let i = 0; i < 8; i++) {
+            const node = new THREE.Mesh(
+                nodeGeometry,
+                nodeMaterial
+            );
+
+            const angle =
+                (Math.PI * 2 / 8) * i;
+
+            node.position.set(
+                Math.cos(angle) * 2.05,
+                0,
+                Math.sin(angle) * 2.05
+            );
+
+            ring2.add(node);
+            nodes.push(node);
+        }
+
+        // Animation
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = clock.getElapsedTime();
+
+            core.rotation.x = time * 0.15;
+            core.rotation.y = time * 0.35;
+
+            wire.rotation.x = -time * 0.10;
+            wire.rotation.y = -time * 0.25;
+
+            ring1.rotation.z = time * 0.45;
+            ring2.rotation.y = time * 0.35;
+
+            ring3.rotation.x = time * 0.20;
+            ring3.rotation.z = time * 0.15;
+
+            nodes.forEach(function (node, index) {
+                const angle =
+                    (Math.PI * 2 / nodes.length) *
+                    index +
+                    time * 0.35;
+
+                node.position.x =
+                    Math.cos(angle) * 2.05;
+
+                node.position.z =
+                    Math.sin(angle) * 2.05;
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Resize
+        function resize() {
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+
+            if (!w || !h) return;
+
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(w, h, false);
+        }
+
+        window.addEventListener("resize", resize);
+
+        if (typeof ResizeObserver !== "undefined") {
+            const observer = new ResizeObserver(resize);
+            observer.observe(container);
+        }
+
+        resize();
+
+        console.log(
+            "NEXINSx Intelligence Core: ONLINE"
+        );
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initIntelligenceCore
+        );
+    } else {
+        initIntelligenceCore();
+    }
 })();
 </script>
-</div>
 <!-- STITCH_THREEJS_END:ANIMATION_4 -->
 <!-- Brand Logo overlay -->
 <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiNQMfFvz9JocfPg_oC_95DkhwWNd8XWlG5ku_TSswAL7Y3GZgZGqPrTr4jgRcszHcx_IvG8-PR-YwIf5zdi3GDUeJ8NM9oMMomxWLKiH0dmfi3S9VP48QxzTQg332ct2HE8KDsUMgKFFfVjKDmaftfdGrc7OJMRC4eFrJXrXSDk9g0WqrDlTiE8IehOKcO-YhZ7Xf0HJxmOPNDVAZUJYu91OmG4weQs-P4OTHolPmRQwSegq_cPI7vAAPWlfxnrKavg" alt="NEXINSx Logo" class="w-16 h-16 absolute bottom-4 right-4 z-10 mix-blend-multiply opacity-50">
