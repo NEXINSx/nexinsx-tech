@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NEXINSx — Projects</title>
+<meta name="description" content="Explore selected projects, experiments and systems built by NEXINSx.">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Inter','system-ui','sans-serif'],
+        mono: ['JetBrains Mono','ui-monospace','monospace']
+      }
+    }
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#f7f7f5;color:#111;font-family:Inter,system-ui,sans-serif}
+::selection{background:#111;color:#fff}
+a{text-decoration:none;color:inherit}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.grid-bg{
+ background-image:linear-gradient(rgba(17,17,17,.055) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(17,17,17,.055) 1px,transparent 1px);
+ background-size:32px 32px;
+}
+.noise{position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.025;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.project-card{transition:transform .35s ease,border-color .35s ease,background .35s ease}
+.project-card:hover{transform:translateY(-5px);border-color:#111;background:#fbfbf9}
+.project-card .arrow{transition:transform .25s ease}
+.project-card:hover .arrow{transform:translate(4px,-4px)}
+.filter-btn{transition:.2s ease}
+.filter-btn.active,.filter-btn:hover{background:#111;color:#fff;border-color:#111}
+.reveal{opacity:0;transform:translateY(18px);animation:reveal .7s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes reveal{to{opacity:1;transform:none}}
+.scanline{position:absolute;left:0;right:0;height:1px;background:#111;opacity:.08;animation:scan 5s linear infinite}
+@keyframes scan{from{top:0}to{top:100%}}
+</style>
+</head>
+
+<body class="grid-bg">
+<div class="noise"></div>
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-[#f7f7f5]/95 backdrop-blur border-b border-[#d8d8d4]">
+  <div class="h-16 max-w-[1600px] mx-auto px-5 lg:px-8 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3">
+      <img
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmyck2xDD8vgvIJoXZB5ziZkTTGVgOod-kf_5LsftaCXpH9z0FrdsZy2QHMsxCegxUtMTX5waOL3-J0gSJyUVf442TXuqtwDjSM5GmvPW1BUZOuwHNp-WCDaoMsTlGn1f9cCWaMmQ4qmhLDiwspRm8lFTsk53ptMUytw9gHlEThpgxqr2r-xm4ho4vhD5L0r-Doz-_bEzrPjmob_9ZBKwvpyXS0ahByGzEk5kGnnoOlbxjfwLuFCnqUNpIe2isTW_dy20fnQlPOtO5rg"
+        alt="NEXINSx"
+        class="h-10 w-auto object-contain">
+      <span class="mono text-[10px] uppercase tracking-[.18em] text-[#777] hidden sm:block">Projects</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-7 mono text-[10px] uppercase">
+      <a href="/" class="hover:text-[#777] transition">Home</a>
+      <a href="/docs/" class="hover:text-[#777] transition">Documentation</a>
+      <a href="#projects" class="hover:text-[#777] transition">Projects</a>
+      <a href="https://discord.gg/6xNbyn9ZN6" target="_blank" rel="noopener noreferrer"
+         class="border border-[#111] px-4 py-2 hover:bg-[#111] hover:text-white transition">Enquiry ↗</a>
+    </nav>
+
+    <button id="menuBtn" class="md:hidden mono text-[10px] border border-[#111] px-3 py-2">MENU</button>
+  </div>
+</header>
+
+<div id="mobileMenu" class="hidden fixed top-16 left-0 right-0 z-40 bg-[#f7f7f5] border-b border-[#d8d8d4] p-5">
+  <div class="grid gap-1 mono text-xs uppercase">
+    <a href="/" class="p-3 border-b border-[#ddd]">Home</a>
+    <a href="/docs/" class="p-3 border-b border-[#ddd]">Documentation</a>
+    <a href="#projects" class="p-3 border-b border-[#ddd]">Projects</a>
+    <a href="https://discord.gg/6xNbyn9ZN6" target="_blank" rel="noopener noreferrer" class="p-3">Enquiry ↗</a>
+  </div>
+</div>
+
+<main>
+<section class="relative min-h-[610px] border-b border-[#d8d8d4] overflow-hidden flex items-end">
+  <div class="scanline"></div>
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute w-[420px] h-[420px] border border-[#111]/10 rounded-full left-[62%] top-[20%]"></div>
+    <div class="absolute w-[300px] h-[300px] border border-[#111]/10 rounded-full left-[65%] top-[28%]"></div>
+    <div class="absolute w-2 h-2 bg-[#111] rounded-full left-[78%] top-[42%]"></div>
+  </div>
+
+  <div class="relative z-10 max-w-[1600px] w-full mx-auto px-6 md:px-10 lg:px-16 pb-20 pt-32">
+    <div class="max-w-5xl reveal">
+      <div class="mono text-[10px] tracking-[.22em] text-[#777] uppercase mb-7">NEXINSx / PROJECT ARCHIVE / 2026</div>
+      <h1 class="text-6xl md:text-8xl lg:text-[110px] font-extrabold tracking-[-.07em] leading-[.82]">
+        BUILT.<br><span class="text-[#777]">TESTED.</span><br>ITERATED.
+      </h1>
+      <div class="mt-9 max-w-2xl flex flex-col md:flex-row gap-7 md:items-end">
+        <p class="text-lg md:text-xl text-[#555] leading-relaxed">
+          Explore selected experiments, products and systems developed across
+          AI, agents, automation, software, robotics and physical intelligence.
+        </p>
+        <div class="mono text-[9px] border border-[#111] px-4 py-3 shrink-0">
+          ARCHIVE<br><strong>PROJECTS / ACTIVE</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="border-b border-[#d8d8d4]">
+  <div class="max-w-[1600px] mx-auto px-6 md:px-10 lg:px-16 py-8 flex flex-col md:flex-row md:items-center justify-between gap-5">
+    <div class="mono text-[10px] uppercase tracking-[.18em] text-[#777]">Selected Projects</div>
+    <div id="filters" class="flex flex-wrap gap-2">
+      <button class="filter-btn active mono text-[9px] uppercase border border-[#d8d8d4] px-4 py-2" data-filter="all">All</button>
+      <button class="filter-btn mono text-[9px] uppercase border border-[#d8d8d4] px-4 py-2" data-filter="ai">AI</button>
+      <button class="filter-btn mono text-[9px] uppercase border border-[#d8d8d4] px-4 py-2" data-filter="software">Software</button>
+      <button class="filter-btn mono text-[9px] uppercase border border-[#d8d8d4] px-4 py-2" data-filter="automation">Automation</button>
+      <button class="filter-btn mono text-[9px] uppercase border border-[#d8d8d4] px-4 py-2" data-filter="hardware">Hardware</button>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-[1600px] mx-auto px-6 md:px-10 lg:px-16 py-12">
+  <div id="projectGrid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+
+   <!-- NX / 001 — SMART HEALTH ADVISORY SYSTEM -->
+<a
+  href="https://smart-health-advisory-system.vercel.app/"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="block project-card project-item technical-border bg-[#f3f3ef] min-h-[390px] flex flex-col"
+  data-category="ai"
+>
+  <div class="p-5 flex justify-between mono text-[9px] text-[#777]">
+    <span>NX / 001</span>
+    <span>AI / HEALTH</span>
+  </div>
+
+  <div class="flex-1 p-6 flex flex-col justify-end">
+    <div class="mono text-[9px] text-[#777] mb-4">
+      INTELLIGENT HEALTH SYSTEM
+    </div>
+
+    <h2 class="text-3xl font-bold tracking-[-.045em]">
+      SMART HEALTH ADVISORY
+    </h2>
+
+    <p class="text-sm text-[#666] leading-relaxed mt-3 max-w-md">
+      An AI-assisted health advisory platform concept designed to provide
+      accessible health insights, report analysis and guidance.
+    </p>
+
+    <div class="mt-7 flex items-center justify-between">
+      <div class="mono text-[9px] uppercase">
+        AI / Health / Advisory
+      </div>
+
+      <span class="arrow text-xl">↗</span>
+    </div>
+  </div>
+</a>
+
+
+<!-- NX / 002 — TAKE A TEST -->
+<a
+  href="https://takeatest.vercel.app/"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="block project-card project-item technical-border bg-[#f3f3ef] min-h-[390px] flex flex-col"
+  data-category="software"
+>
+  <div class="p-5 flex justify-between mono text-[9px] text-[#777]">
+    <span>NX / 002</span>
+    <span>SOFTWARE / EDTECH</span>
+  </div>
+
+  <div class="flex-1 p-6 flex flex-col justify-end">
+    <div class="mono text-[9px] text-[#777] mb-4">
+      ASSESSMENT PLATFORM
+    </div>
+
+    <h2 class="text-3xl font-bold tracking-[-.045em]">
+      TAKE A TEST
+    </h2>
+
+    <p class="text-sm text-[#666] leading-relaxed mt-3 max-w-md">
+      A modern assessment platform for creating and taking structured tests,
+      quizzes and academic practice sessions.
+    </p>
+
+    <div class="mt-7 flex items-center justify-between">
+      <div class="mono text-[9px] uppercase">
+        Web / Assessment / EdTech
+      </div>
+
+      <span class="arrow text-xl">↗</span>
+    </div>
+  </div>
+</a>
+
+
+<!-- NX / 003 — TDM ARENA -->
+<a
+  href="https://tdmarena.vercel.app/"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="block project-card project-item technical-border bg-[#f3f3ef] min-h-[390px] flex flex-col"
+  data-category="software"
+>
+  <div class="p-5 flex justify-between mono text-[9px] text-[#777]">
+    <span>NX / 003</span>
+    <span>ESPORTS / PLATFORM</span>
+  </div>
+
+  <div class="flex-1 p-6 flex flex-col justify-end">
+    <div class="mono text-[9px] text-[#777] mb-4">
+      COMPETITIVE GAMING
+    </div>
+
+    <h2 class="text-3xl font-bold tracking-[-.045em]">
+      TDM ARENA
+    </h2>
+
+    <p class="text-sm text-[#666] leading-relaxed mt-3 max-w-md">
+      A competitive gaming platform concept built around tournament operations,
+      match information and structured esports experiences.
+    </p>
+
+    <div class="mt-7 flex items-center justify-between">
+      <div class="mono text-[9px] uppercase">
+        Esports / Gaming / Web
+      </div>
+
+      <span class="arrow text-xl">↗</span>
+    </div>
+  </div>
+</a>
+
+
+<!-- NX / 004 — EXAM SCHEDULE -->
+<a
+  href="https://examschedu.vercel.app/"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="block project-card project-item technical-border bg-[#f3f3ef] min-h-[390px] flex flex-col"
+  data-category="software"
+>
+  <div class="p-5 flex justify-between mono text-[9px] text-[#777]">
+    <span>NX / 004</span>
+    <span>SOFTWARE / EDUCATION</span>
+  </div>
+
+  <div class="flex-1 p-6 flex flex-col justify-end">
+    <div class="mono text-[9px] text-[#777] mb-4">
+      ACADEMIC SCHEDULING
+    </div>
+
+    <h2 class="text-3xl font-bold tracking-[-.045em]">
+      EXAM SCHEDULE
+    </h2>
+
+    <p class="text-sm text-[#666] leading-relaxed mt-3 max-w-md">
+      A responsive academic scheduling system for quickly viewing examination
+      dates, subjects and class-wise schedules.
+    </p>
+
+    <div class="mt-7 flex items-center justify-between">
+      <div class="mono text-[9px] uppercase">
+        React / Vite / Mobile
+      </div>
+
+      <span class="arrow text-xl">↗</span>
+    </div>
+  </div>
+</a>
+
+
+<!-- NX / 005 — ULTRON -->
+<a
+  href="https://ultron-nexinsx.vercel.app/"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="block project-card project-item technical-border bg-[#f3f3ef] min-h-[390px] flex flex-col"
+  data-category="ai"
+>
+  <div class="p-5 flex justify-between mono text-[9px] text-[#777]">
+    <span>NX / 005</span>
+    <span>AI / AGENT</span>
+  </div>
+
+  <div class="flex-1 p-6 flex flex-col justify-end">
+    <div class="mono text-[9px] text-[#777] mb-4">
+      PERSONAL INTELLIGENCE
+    </div>
+
+    <h2 class="text-3xl font-bold tracking-[-.045em]">
+      ULTRON
+    </h2>
+
+    <p class="text-sm text-[#666] leading-relaxed mt-3 max-w-md">
+      An experimental NEXINSx intelligence interface exploring conversational
+      AI, agent interaction and autonomous digital assistance.
+    </p>
+
+    <div class="mt-7 flex items-center justify-between">
+      <div class="mono text-[9px] uppercase">
+        AI / Agents / Interface
+      </div>
+
+      <span class="arrow text-xl">↗</span>
+    </div>
+  </div>
+</a>
+
+
+<!-- NX / 006 — CAMPUS MANAGE HUB -->
+<a
+  href="https://campusmanagehub.vercel.app/"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="block project-card project-item technical-border bg-[#f3f3ef] min-h-[390px] flex flex-col"
+  data-category="software"
+>
+  <div class="p-5 flex justify-between mono text-[9px] text-[#777]">
+    <span>NX / 006</span>
+    <span>SOFTWARE / CAMPUS</span>
+  </div>
+
+  <div class="flex-1 p-6 flex flex-col justify-end">
+    <div class="mono text-[9px] text-[#777] mb-4">
+      CAMPUS MANAGEMENT
+    </div>
+
+    <h2 class="text-3xl font-bold tracking-[-.045em]">
+      CAMPUS MANAGE HUB
+    </h2>
+
+    <p class="text-sm text-[#666] leading-relaxed mt-3 max-w-md">
+      A centralized campus management interface concept for organizing
+      academic information, student workflows and institutional operations.
+    </p>
+
+    <div class="mt-7 flex items-center justify-between">
+      <div class="mono text-[9px] uppercase">
+        Web / Campus / Management
+      </div>
+
+      <span class="arrow text-xl">↗</span>
+    </div>
+  </div>
+</a>
+
+  </div>
+
+  <div id="emptyState" class="hidden py-24 text-center">
+    <div class="mono text-[10px] text-[#777]">NO PROJECTS FOUND IN THIS CLASSIFICATION.</div>
+  </div>
+</section>
+
+<section class="border-t border-b border-[#d8d8d4]">
+  <div class="max-w-[1600px] mx-auto px-6 md:px-10 lg:px-16 py-20">
+    <div class="max-w-4xl">
+      <div class="mono text-[10px] text-[#777] uppercase tracking-[.18em] mb-5">Archive / Philosophy</div>
+      <h2 class="text-4xl md:text-6xl font-extrabold tracking-[-.06em] leading-[.9]">
+        PROJECTS ARE<br><span class="text-[#777]">PROBES INTO THE FUTURE.</span>
+      </h2>
+      <p class="mt-7 text-[#555] text-lg leading-relaxed max-w-2xl">
+        Not every experiment becomes a product. Some become infrastructure,
+        some become research, and some simply teach us what to build next.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="bg-[#111] text-white px-6 md:px-10 lg:px-16 py-20">
+  <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row md:items-end justify-between gap-10">
+    <div>
+      <div class="mono text-[10px] text-[#888] uppercase tracking-[.18em] mb-5">NEXINSx / Collaboration</div>
+      <h2 class="text-5xl md:text-7xl font-extrabold tracking-[-.065em] leading-[.85]">HAVE A SYSTEM<br>TO BUILD?</h2>
+      <p class="text-[#aaa] mt-6 max-w-xl leading-relaxed">
+        Tell us what you're trying to make. Enquiries are handled through the NEXINSx Discord workspace.
+      </p>
+    </div>
+    <a href="https://discord.gg/6xNbyn9ZN6" target="_blank" rel="noopener noreferrer"
+       class="shrink-0 inline-flex items-center justify-center bg-white text-black px-8 py-4 mono text-xs font-bold uppercase hover:bg-[#ddd] transition">
+      Enquiry →
+    </a>
+  </div>
+</section>
+</main>
+
+<footer class="bg-[#111] text-[#777] border-t border-[#333] px-6 md:px-10 lg:px-16 py-8">
+  <div class="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between gap-3 mono text-[9px] uppercase">
+    <span>© 2026 NEXINSx / Project Archive</span>
+    <span>AI / Agents / Robotics / Automation / Software</span>
+  </div>
+</footer>
+
+<script>
+const menuBtn=document.getElementById('menuBtn');
+const mobileMenu=document.getElementById('mobileMenu');
+menuBtn.addEventListener('click',()=>mobileMenu.classList.toggle('hidden'));
+mobileMenu.addEventListener('click',e=>{if(e.target.tagName==='A')mobileMenu.classList.add('hidden')});
+
+const buttons=[...document.querySelectorAll('.filter-btn')];
+const items=[...document.querySelectorAll('.project-item')];
+const empty=document.getElementById('emptyState');
+
+buttons.forEach(btn=>{
+ btn.addEventListener('click',()=>{
+  buttons.forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const filter=btn.dataset.filter;
+  let visible=0;
+  items.forEach(item=>{
+   const show=filter==='all'||item.dataset.category===filter;
+   item.style.display=show?'flex':'none';
+   if(show)visible++;
+  });
+  empty.classList.toggle('hidden',visible!==0);
+ });
+});
+</script>
+</body>
+</html>
